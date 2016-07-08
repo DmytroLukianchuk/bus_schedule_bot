@@ -1,0 +1,4 @@
+flask
+requests
+gunicorn==19.4.5
+pyTelegramBotAPI
