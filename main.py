@@ -1,3 +1,4 @@
+from flask import Flask, request
 import telebot
 from telebot import types
 
@@ -5,7 +6,24 @@ import config
 import functions
 
 
+app = Flask(__name__)
 bot = telebot.TeleBot(config.token)
+
+
+bot.set_webhook(url="https://schedulebot.herokuapp.com/hook")
+
+
+@app.route("/")
+def index():
+    return "Hi"
+
+
+@app.route("/hook", methods=['POST'])
+def webhook():
+    json_string = request.get_data()
+    update = telebot.types.Update.de_json(json_string)
+    bot.process_new_messages([update.message])
+    return "OK"
 
 
 @bot.message_handler(commands=['start'])
@@ -48,6 +66,3 @@ def schedule_from_village(message):
 def repeat_all_messages(message):
     bot.reply_to(message, config.USE_START_COMMAND)
 
-
-if __name__ == '__main__':
-    bot.polling(none_stop=True)
