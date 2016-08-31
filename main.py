@@ -1,6 +1,5 @@
 from flask import Flask, request
 import telebot
-from telebot import types
 
 import config
 import functions
@@ -30,11 +29,11 @@ def webhook():
 def start(message):
     bot.send_message(message.chat.id, 'Hello, ' + message.from_user.first_name + " " +
                      message.from_user.last_name + config.WELCOME_HELP)
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
-    itembtna = types.KeyboardButton('/%s' % config.FROM_Z)
-    itembtnb = types.KeyboardButton('/%s' % config.FROM_O)
-    itembtnc = types.KeyboardButton('/%s' % config.SCHEDULE_Z)
-    itembtnd = types.KeyboardButton('/%s' % config.SCHEDULE_O)
+    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
+    itembtna = telebot.types.KeyboardButton('/%s' % config.FROM_Z)
+    itembtnb = telebot.types.KeyboardButton('/%s' % config.FROM_O)
+    itembtnc = telebot.types.KeyboardButton('/%s' % config.SCHEDULE_Z)
+    itembtnd = telebot.types.KeyboardButton('/%s' % config.SCHEDULE_O)
     markup.row(itembtna, itembtnb)
     markup.row(itembtnc, itembtnd)
     bot.send_message(message.chat.id, 'Choose what you wanna do next from the following options: ', reply_markup=markup)
