@@ -1,15 +1,11 @@
-import config
 import telebot
 from telebot import types
+
+import config
 import functions
-from flask import Flask
-import os
 
 
 bot = telebot.TeleBot(config.token)
-
-
-# server = Flask(__name__)
 
 
 @bot.message_handler(commands=['start'])
@@ -28,7 +24,7 @@ def start(message):
 
 @bot.message_handler(commands=[('%s' % config.FROM_Z)])
 def from_village(message):
-    bot.send_message(message.chat.id, 'Your closest bus from Zaria is @:\n' + functions.find_nerest(config.bus_time_Z), parse_mode='HTML')
+    bot.send_message(message.chat.id, 'Your closest bus from Zaria is @:\n' + functions.find_nerest(config.bus_time_Z))
 
 
 @bot.message_handler(commands=['%s' % config.FROM_O])
@@ -39,7 +35,8 @@ def from_city(message):
 
 @bot.message_handler(commands=['%s' % config.SCHEDULE_O])
 def schedule_from_city(message):
-    bot.send_message(message.chat.id, 'Schedule from Ostrovskogo:\n' + str(functions.schedule(config.bus_time_O)))
+    bot.send_message(message.chat.id, parse_mode="HTML", text='Schedule from <b>Ostrovskogo</b>:\n' + '<b>' +
+                                                              str(functions.schedule(config.bus_time_O)) + '</b>')
 
 
 @bot.message_handler(commands=['%s' % config.SCHEDULE_Z])
@@ -50,9 +47,6 @@ def schedule_from_village(message):
 @bot.message_handler(content_types=["text"])
 def repeat_all_messages(message):
     bot.reply_to(message, config.USE_START_COMMAND)
-
-
-# server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
 
 
 if __name__ == '__main__':
